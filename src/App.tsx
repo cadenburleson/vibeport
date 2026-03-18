@@ -1,50 +1,64 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import { useState, useCallback } from "react";
+import { useServices } from "@/hooks/use-services";
+import { Header } from "@/components/header";
+import { ServiceList } from "@/components/service-list";
+
+function loadHiddenPorts(): Set<number> {
+  try {
+    const raw = localStorage.getItem("vibeport:hiddenPorts");
+    return raw ? new Set(JSON.parse(raw)) : new Set();
+  } catch {
+    return new Set();
+  }
+}
+
+function saveHiddenPorts(ports: Set<number>) {
+  localStorage.setItem("vibeport:hiddenPorts", JSON.stringify([...ports]));
+}
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const {
+    services,
+    stoppedServices,
+    loading,
+    error,
+    scan,
+    stopService,
+    startService,
+  } = useServices();
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  const [hiddenPorts, setHiddenPorts] = useState<Set<number>>(loadHiddenPorts);
+
+  const toggleHidden = useCallback((port: number) => {
+    setHiddenPorts((prev) => {
+      const next = new Set(prev);
+      if (next.has(port)) next.delete(port);
+      else next.add(port);
+      saveHiddenPorts(next);
+      return next;
+    });
+  }, []);
 
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
+    <div className="dark min-h-screen bg-background text-foreground">
+      <Header serviceCount={services.length} onRefresh={scan} />
+      <main className="p-6">
+        {error && (
+          <div className="mb-4 rounded-lg bg-destructive/10 px-4 py-2 text-sm text-destructive">
+            {error}
+          </div>
+        )}
+        <ServiceList
+          services={services}
+          stoppedServices={stoppedServices}
+          loading={loading}
+          hiddenPorts={hiddenPorts}
+          onStop={stopService}
+          onStart={startService}
+          onToggleHidden={toggleHidden}
         />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
+      </main>
+    </div>
   );
 }
 

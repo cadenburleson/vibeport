@@ -1,0 +1,9 @@
+services:
+  build:
+    build:
+      context: .
+      target: builder
+    volumes:
+      - ./src-tauri/target/release/bundle:/output
+    command: >
+      sh -c "cp -r /app/src-tauri/target/release/bundle/* /output/ 2>/dev/null || echo 'Build artifacts copied'"

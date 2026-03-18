@@ -1,0 +1,8 @@
+node_modules
+target
+dist
+.git
+.claude
+*.dmg
+*.app
+.DS_Store
