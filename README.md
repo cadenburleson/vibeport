@@ -6,6 +6,10 @@ A lightweight desktop app that auto-discovers dev servers running on your local 
 ![Tauri](https://img.shields.io/badge/Tauri_v2-FFC131?style=flat&logo=tauri&logoColor=black)
 ![License](https://img.shields.io/github/license/cadenburleson/vibeport)
 
+<p align="center">
+  <img src=".github/screenshot.png" alt="VibePort screenshot" width="800" />
+</p>
+
 ## Features
 
 - **Auto-discovery** — finds dev servers listening on local ports
