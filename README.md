@@ -1,13 +1,37 @@
 # VibePort
 
-Local dev server manager — auto-discovers dev servers running on local ports, filters out system processes, and provides a visual UI to start/stop services and view their commands.
+A lightweight desktop app that auto-discovers dev servers running on your local ports and gives you a clean UI to monitor and manage them.
 
-## Tech Stack
+![macOS](https://img.shields.io/badge/macOS-000000?style=flat&logo=apple&logoColor=white)
+![Tauri](https://img.shields.io/badge/Tauri_v2-FFC131?style=flat&logo=tauri&logoColor=black)
+![License](https://img.shields.io/github/license/cadenburleson/vibeport)
 
-- **Tauri v2** (Rust backend) — port scanning, process management
-- **React 18 + TypeScript** — frontend UI
-- **Vite** — bundler
-- **ShadCN UI + Tailwind CSS v4** — component library & styling
+## Features
+
+- **Auto-discovery** — finds dev servers listening on local ports
+- **Start/Stop** — manage services directly from the UI
+- **Memory details** — click to see RSS vs Virtual memory breakdown
+- **Hide services** — declutter your view, hidden services sort to the bottom
+- **Smart dedup** — collapses parent/worker processes on the same port
+
+## Install
+
+### Download (macOS Apple Silicon)
+
+Grab the latest `.dmg` from [Releases](https://github.com/cadenburleson/vibeport/releases/latest), open it, and drag VibePort to your Applications folder.
+
+### Build from source
+
+Requires [Node.js](https://nodejs.org/), [Rust](https://rustup.rs/), and the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/).
+
+```bash
+git clone https://github.com/cadenburleson/vibeport.git
+cd vibeport
+npm install
+npm run tauri build
+```
+
+The built app will be at `src-tauri/target/release/bundle/macos/VibePort.app`.
 
 ## Development
 
@@ -16,11 +40,12 @@ npm install
 npm run tauri dev
 ```
 
-## Docker (Build Environment)
+## Tech Stack
 
-```bash
-docker compose run build
-```
+- **Tauri v2** (Rust) — port scanning, process management
+- **React + TypeScript** — frontend
+- **Vite** — bundler
+- **ShadCN UI + Tailwind CSS v4** — styling
 
 ## License
 
