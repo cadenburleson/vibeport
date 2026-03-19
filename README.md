@@ -24,6 +24,11 @@ A lightweight desktop app that auto-discovers dev servers running on your local 
 
 Grab the latest `.dmg` from [Releases](https://github.com/cadenburleson/vibeport/releases/latest), open it, and drag VibePort to your Applications folder.
 
+> **macOS note:** The app isn't code-signed, so macOS may say it's "damaged." Fix this by running:
+> ```bash
+> xattr -cr /Applications/VibePort.app
+> ```
+
 ### Build from source
 
 Requires [Node.js](https://nodejs.org/), [Rust](https://rustup.rs/), and the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/).
